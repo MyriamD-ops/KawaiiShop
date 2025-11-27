@@ -14,7 +14,7 @@ use App\Http\Controllers\UserController;
 
 // Page d'accueil
 Route::get('/', function () {
-return view('welcome');
+return view('welcomeBis');
 });
 // Routes publiques (accessibles sans authentification)
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
