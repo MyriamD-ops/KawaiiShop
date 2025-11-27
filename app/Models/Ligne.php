@@ -8,7 +8,7 @@ use App\Models\Order_cart;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Line extends Model
+class Ligne extends Model
 {
      protected $table = 'ligne';
     use HasFactory;
