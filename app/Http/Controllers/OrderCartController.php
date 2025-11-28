@@ -3,97 +3,62 @@
 namespace App\Http\Controllers;
 
 use App\Models\OrderCart;
-use App\Models\User;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class OrderCartController extends Controller
 {
-    // Afficher le panier de l'utilisateur connecté
     public function index()
     {
-        $orderCart = OrderCart::with('lines.product')
-            ->where('user_id', Auth::id())
+        $cartItems = OrderCart::with('product')
+            ->where('users_id', Auth::id())
+            ->get();
+            
+        return view('cart.index', compact('cartItems'));
+    }
+
+    public function add(Request $request, Product $product)
+    {
+        $cartItem = OrderCart::where('users_id', Auth::id())
+            ->where('products_id', $product->id)
             ->first();
 
-        return view('order-carts.index', compact('orderCart'));
+        if ($cartItem) {
+            $cartItem->increment('quantite');
+        } else {
+            OrderCart::create([
+                'users_id' => Auth::id(),
+                'products_id' => $product->id,
+                'quantite' => 1,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Produit ajouté au panier');
     }
 
-    // Afficher tous les paniers (admin)
-    public function adminIndex()
+    public function update(Request $request, OrderCart $cartItem)
     {
-        $orderCarts = OrderCart::with('user', 'lines')->paginate(15);
-        return view('order-carts.admin-index', compact('orderCarts'));
+        if ($request->action === 'increase') {
+            $cartItem->increment('quantite');
+        } elseif ($request->action === 'decrease' && $cartItem->quantite > 1) {
+            $cartItem->decrement('quantite');
+        } elseif (isset($request->quantite)) {
+            $cartItem->update(['quantite' => $request->quantite]);
+        }
+
+        return redirect()->back()->with('success', 'Panier mis à jour');
     }
 
-    // Créer ou récupérer le panier de l'utilisateur
-    public function getOrCreate()
+    public function destroy(OrderCart $cartItem)
     {
-        $orderCart = OrderCart::firstOrCreate(
-            ['user_id' => Auth::id()],
-            ['quantite' => 0]
-        );
-
-        return $orderCart;
+        $cartItem->delete();
+        return redirect()->back()->with('success', 'Article retiré du panier');
     }
 
-    // Afficher le formulaire de création
-    public function create()
+    public function clear()
     {
-        $users = User::all();
-        return view('order-carts.create', compact('users'));
-    }
-
-    // Enregistrer un nouveau panier
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'user_id' => ['required', 'exists:users,id'],
-            'quantite' => ['required', 'integer', 'min:0'],
-        ]);
-
-        $orderCart = OrderCart::create($validated);
-
-        return redirect()->route('order-carts.index')
-            ->with('success', 'Panier créé avec succès.');
-    }
-
-    // Afficher un panier spécifique
-    public function show(OrderCart $orderCart)
-    {
-        $orderCart->load('user', 'lines.product');
-        return view('order-carts.show', compact('orderCart'));
-    }
-
-    // Mettre à jour la quantité totale du panier
-    public function update(Request $request, OrderCart $orderCart)
-    {
-        $validated = $request->validate([
-            'quantite' => ['required', 'integer', 'min:0'],
-        ]);
-
-        $orderCart->update($validated);
-
-        return redirect()->back()
-            ->with('success', 'Panier mis à jour avec succès.');
-    }
-
-    // Vider le panier
-    public function clear(OrderCart $orderCart)
-    {
-        $orderCart->lignes()->delete();
-        $orderCart->update(['quantite' => 0]);
-
-        return redirect()->back()
-            ->with('success', 'Panier vidé avec succès.');
-    }
-
-    // Supprimer un panier
-    public function destroy(OrderCart $orderCart)
-    {
-        $orderCart->delete();
-
-        return redirect()->route('order-carts.admin-index')
-            ->with('success', 'Panier supprimé avec succès.');
+        OrderCart::where('users_id', Auth::id())->delete();
+        return redirect()->back()->with('success', 'Panier vidé');
     }
 }

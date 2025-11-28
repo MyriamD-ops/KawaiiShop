@@ -49,7 +49,7 @@ class ProductController extends Controller
     // Afficher un produit spécifique
     public function show(Product $product)
     {
-        $product->load('category', 'lignes');
+        $product->load('category');
         return view('products.show', compact('product'));
     }
 

@@ -58,7 +58,7 @@ class User extends Authenticatable
     // Relation: Un utilisateur peut avoir plusieurs paniers (order_carts)
     public function orderCarts()
     {
-        return $this->hasMany(Order_Cart::class);
+        return $this->hasMany(OrderCart::class);
     }
 
 

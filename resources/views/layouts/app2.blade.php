@@ -38,11 +38,13 @@
 <body>
     <nav class="navbar">
         <div class="container">
-            <a href="/">Mon Site</a>
+            <a href="/">Accueil</a>
             <a href="/products">Produits</a>
             <a href="/categories">Catégories</a>
+             <a href="/dashboard">Connection</a>
+              
             @auth
-                <a href="/cart">Panier</a>
+                <a href="/order.cart">Panier</a>
                 <a href="/my-orders">Mes Commandes</a>
                 @admin
                     <a href="/admin">Admin</a>

@@ -22,7 +22,7 @@
                 <td>{{ $item->product->name }}</td>
                 <td>{{ $item->product->price }} €</td>
                 <td>
-                    <form action="{{ route('lignes.update', $item) }}" method="POST" style="display: inline;">
+                    <form action="{{ route('lines.update', $item) }}" method="POST" style="display: inline;">
                         @csrf
                         @method('PATCH')
                         <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" 
@@ -31,7 +31,7 @@
                 </td>
                 <td>{{ $item->product->price * $item->quantity }} €</td>
                 <td>
-                    <form action="{{ route('lignes.destroy', $item) }}" method="POST" style="display: inline;">
+                    <form action="{{ route('lines.destroy', $item) }}" method="POST" style="display: inline;">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">Supprimer</button>
