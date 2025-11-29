@@ -3,58 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('KawaiiShop', 'Mon Projet Laravel en DUALCODING')</title>
+    <title>Ma Boutique Kawaii</title>
+    <!-- Intégration de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Police d'écriture mignonne -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; line-height: 1.6; }
-        .navbar { background: #333; padding: 1rem; }
-        .navbar a { color: white; text-decoration: none; margin-right: 20px; }
-        .navbar a:hover { color: #ddd; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .card { border: 1px solid #ddd; padding: 20px; margin: 10px 0; }
-        .btn { 
-            display: inline-block; 
-            padding: 10px 15px; 
-            background: #007bff; 
-            color: white; 
-            text-decoration: none; 
-            border: none; 
-            cursor: pointer;
-            margin: 5px;
+        body {
+            font-family: 'Nunito', sans-serif;
         }
-        .btn:hover { background: #0056b3; }
-        .btn-danger { background: #dc3545; }
-        .btn-danger:hover { background: #c82333; }
-        .btn-success { background: #28a745; }
-        .btn-success:hover { background: #218838; }
-        .row { display: flex; flex-wrap: wrap; margin: 0 -10px; }
-        .col { flex: 1; padding: 10px; }
-        table { width: 100%; border-collapse: collapse; }
-        table, th, td { border: 1px solid #ddd; }
-        th, td { padding: 12px; text-align: left; }
-        .form-control { padding: 8px; margin: 5px 0; width: 100%; }
     </style>
 </head>
-<body>
-    <nav class="navbar">
-        <div class="container">
-            <a href="/">Accueil</a>
-            <a href="/products">Produits</a>
-            <a href="/categories">Catégories</a>
-             <a href="/dashboard">Connection</a>
-              
-            @auth
-                <a href="/order.cart">Panier</a>
-                <a href="/my-orders">Mes Commandes</a>
-                @admin
-                    <a href="/admin">Admin</a>
-                @endadmin
-            @endauth
-        </div>
-    </nav>
+<body class="bg-pink-50 min-h-screen">
+    <!-- En-tête -->
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <!-- Logo et nom du site -->
+            <div class="flex items-center space-x-2">
+                <span class="text-3xl">🌸</span>
+                <h1 class="text-2xl font-bold text-pink-500">Kawaii Shop</h1>
+            </div>
+            
+            <!-- Liens de navigation -->
+            <div class="flex items-center space-x-6">
+                <a href="{{ url('/') }}" class="text-gray-600 hover:text-pink-500 transition">Accueil</a>
+                <a href="{{ url('/products') }}" class="text-gray-600 hover:text-pink-500 transition">Boutique</a>
+                
+                <!-- Icônes du panier et du compte -->
+                <div class="flex space-x-4">
+                    <a href="{{ url('/cart') }}" class="relative">
+                        <span class="text-2xl">🛒</span>
+                        <!-- Bulle avec le nombre d'articles dans le panier -->
+                        <span class="absolute -top-2 -right-2 bg-pink-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">
+                            0 <!-- Pour l'instant en dur, plus tard dynamique -->
+                        </span>
+                    </a>
+                    <a href="{{ url('/login') }}" class="text-2xl">👤</a>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-    <div class="container">
+    <!-- Contenu principal -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Ici va s'insérer le contenu des autres vues -->
         @yield('content')
-    </div>
+    </main>
+
+    <!-- Pied de page -->
+    <footer class="bg-white border-t mt-12">
+        <div class="container mx-auto px-4 py-8 text-center text-gray-600">
+            <p>✨ Made with love for kawaii things ✨</p>
+        </div>
+    </footer>
 </body>
 </html>
