@@ -34,7 +34,7 @@
             <!-- Boutons d'action -->
             <div class="space-y-4">
                 <button class="w-full bg-pink-500 text-white py-4 rounded-xl font-bold text-lg hover:bg-pink-600 transition flex items-center justify-center">
-                    <a href="{{ route('cart.add', ['product' => $product->id]) }}">
+                    <a href="{{ route('cart.index', ['product' => $product->id]) }}">
                     <span class="mr-2">🛒</span> Ajouter au panier
                 </button>
                 <button class="w-full border-2 border-pink-500 text-pink-500 py-4 rounded-xl font-bold text-lg hover:bg-pink-50 transition">

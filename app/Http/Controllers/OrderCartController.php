@@ -18,7 +18,6 @@ class OrderCartController extends Controller
         return view('cart.index', compact('cartItems'));
     }
 
-
     public function add(Request $request, Product $product)
     {
         $cartItem = OrderCart::where('users_id', Auth::id())
@@ -34,29 +33,10 @@ class OrderCartController extends Controller
                 'quantite' => 1,
             ]);
         }
-    
-
-
-    public function add(Request $request, Product $product)
-    {
-    $cartItem = OrderCart::where('users_id', Auth::id())
-        ->where('products_id', $product->id)
-        ->first();
-
-    if ($cartItem) {
-        $cartItem->increment('quantite');
-    } else {
-        OrderCart::create([
-            'users_id' => Auth::id(),
-            'products_id' => $product->id,
-            'quantite' => 1,
-        ]);
-    }
 
         return redirect()->back()->with('success', 'Produit ajouté au panier ! 🎀');
     }
 
-    
     public function update(Request $request, OrderCart $cartItem)
     {
         // Vérifier que l'item appartient à l'utilisateur connecté
