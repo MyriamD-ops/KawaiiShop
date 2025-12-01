@@ -11,18 +11,11 @@ class Category extends Model
 
     protected $fillable = [
         'name',
-       
     ];
 
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
-
-    // Relation: Une catégorie peut avoir plusieurs produits
+    // Relation avec les produits
     public function products()
     {
-        return $this->hasMany(Product::class, 'categories_id', 'id');
-
+        return $this->hasMany(Product::class, 'categories_id');
     }
 }

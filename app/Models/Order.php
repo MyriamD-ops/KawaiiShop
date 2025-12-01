@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\Ligne;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
@@ -18,22 +16,15 @@ class Order extends Model
         'date',
     ];
 
-    protected $casts = [
-        'montant' => 'decimal:2',
-        'date' => 'datetime',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
-
-    // Relation: Une commande appartient à un utilisateur
+    // Relation avec l'utilisateur
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'users_id');
     }
 
-    // Relation: Une commande peut avoir plusieurs lignes
-    public function ligne()
+    // Relation avec les lignes de commande
+    public function lignes()
     {
-        return $this->hasMany(Ligne::class);
+        return $this->hasMany(Ligne::class, 'orders_id');
     }
 }

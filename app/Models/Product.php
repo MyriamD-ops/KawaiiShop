@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-
-use App\Models\Category;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
@@ -19,22 +17,27 @@ class Product extends Model
         'categories_id',
     ];
 
-    protected $casts = [
-        'prix' => 'decimal:2',
-        'date' => 'datetime',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
-
-    // Relation: Un produit appartient à une catégorie
+    // Relation avec la catégorie
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'categories_id');
     }
 
-    // Relation: Un produit peut être dans plusieurs lignes de commande
-    public function ligne()
+    // Relation avec les lignes de commande
+    public function lignes()
     {
-        return $this->hasMany(Ligne::class);
+        return $this->hasMany(Ligne::class, 'products_id');
+    }
+
+    // Relation avec le panier (OrderCart)
+    public function orderCarts()
+    {
+        return $this->hasMany(OrderCart::class, 'products_id');
+    }
+
+    // Accesseur pour le prix formaté
+    public function getFormattedPriceAttribute()
+    {
+        return number_format($this->prix, 2, ',', ' ') . ' €';
     }
 }

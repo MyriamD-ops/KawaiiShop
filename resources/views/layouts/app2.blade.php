@@ -27,8 +27,9 @@
             <!-- Liens de navigation -->
             <div class="flex items-center space-x-6">
                 <a href="{{ url('/') }}" class="text-gray-600 hover:text-pink-500 transition">Accueil</a>
-                <a href="{{ url('/products') }}" class="text-gray-600 hover:text-pink-500 transition">Boutique</a>
-                
+                <a href="{{ url('/products') }}" class="text-gray-600 hover:text-pink-500 transition">Produits</a>
+                <a href="{{ url('/category') }}" class="text-gray-600 hover:text-pink-500 transition">Catégories</a>
+                <a href="{{ url('/admin') }}" class="text-gray-600 hover:text-pink-500 transition">Administrateur</a>                
                 <!-- Icônes du panier et du compte -->
                 <div class="flex space-x-4">
                     <a href="{{ url('/cart') }}" class="relative">

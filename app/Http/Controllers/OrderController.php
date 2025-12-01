@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Ordercart;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -89,4 +90,17 @@ class OrderController extends Controller
         return redirect()->back()
             ->with('success', 'Statut de la commande mis à jour avec succès.');
     }
+
+
+    public function validateOrder($id) {
+    $order = Order::findOrFail($id);
+    $order->etat = 'payée';
+    $order->save();
+
+    // Supprimer le panier associé
+    Ordercart::where('user_id', $order->user_id)->delete();
+
+    return redirect()->route('orders.index')->with('success', 'Commande validée et panier vidé.');
+}
+
 }

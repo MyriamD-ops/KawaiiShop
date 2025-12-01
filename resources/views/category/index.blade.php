@@ -22,7 +22,7 @@
                     <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
                         <i class="fas fa-tags text-white text-lg"></i>
                     </div>
-                    <span class="text-xl font-bold text-gray-800">Gestion des Catégories</span>
+                    <span class="text-xl font-bold text-gray-800">Boutique</span>
                 </div>
                 <nav class="hidden md:block">
                     <ul class="flex space-x-8">
@@ -54,7 +54,7 @@
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre de Produits</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date de Création</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Produits de la catégorie</th>
                             
                         </tr>
                     </thead>
@@ -69,9 +69,10 @@
                                     {{ $category->products->count() }} produit(s)
                                 </span>
                             </td>
-                            
-                            
-                        </tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <a href="{{ route('category.show', $category->id) }}" class="text-blue-600 hover:text-blue-900 font-medium">
+                                    Voir 
+                                </a>
                         @endforeach
                     </tbody>
                 </table>

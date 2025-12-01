@@ -11,7 +11,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::withCount('products')->paginate(15);
-        return view('categories.index', compact('categories'));
+        return view('category.index', compact('categories'));
     }
 
     // Afficher le formulaire de création
@@ -30,16 +30,16 @@ class CategoryController extends Controller
 
         $category = Category::create($validated);
 
-        return redirect()->route('categories.index')
+        return redirect()->route('category.index')
             ->with('success', 'Catégorie créée avec succès.');
     }
 
-    // Afficher une catégorie spécifique
-    public function show(Category $category)
-    {
-        $category->load('products');
-        return view('categories.show', compact('category'));
-    }
+    // Afficher les produits par catégorie 
+    public function show($id)
+{
+    $category = Category::with('products')->findOrFail($id);
+    return view('category.show', compact('category'));}
+
 
     // Afficher le formulaire d'édition
     public function edit(Category $category)
@@ -75,4 +75,7 @@ class CategoryController extends Controller
         return redirect()->route('categories.index')
             ->with('success', 'Catégorie supprimée avec succès.');
     }
+
+
+    
 }

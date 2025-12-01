@@ -14,9 +14,10 @@ class OrderCartController extends Controller
         $cartItems = OrderCart::with('product')
             ->where('users_id', Auth::id())
             ->get();
-            
+
         return view('cart.index', compact('cartItems'));
     }
+
 
     public function add(Request $request, Product $product)
     {
@@ -33,12 +34,36 @@ class OrderCartController extends Controller
                 'quantite' => 1,
             ]);
         }
+    
 
-        return redirect()->back()->with('success', 'Produit ajouté au panier');
+
+    public function add(Request $request, Product $product)
+    {
+    $cartItem = OrderCart::where('users_id', Auth::id())
+        ->where('products_id', $product->id)
+        ->first();
+
+    if ($cartItem) {
+        $cartItem->increment('quantite');
+    } else {
+        OrderCart::create([
+            'users_id' => Auth::id(),
+            'products_id' => $product->id,
+            'quantite' => 1,
+        ]);
     }
 
+        return redirect()->back()->with('success', 'Produit ajouté au panier ! 🎀');
+    }
+
+    
     public function update(Request $request, OrderCart $cartItem)
     {
+        // Vérifier que l'item appartient à l'utilisateur connecté
+        if ($cartItem->users_id !== Auth::id()) {
+            return redirect()->back()->with('error', 'Action non autorisée.');
+        }
+
         if ($request->action === 'increase') {
             $cartItem->increment('quantite');
         } elseif ($request->action === 'decrease' && $cartItem->quantite > 1) {
@@ -47,18 +72,22 @@ class OrderCartController extends Controller
             $cartItem->update(['quantite' => $request->quantite]);
         }
 
-        return redirect()->back()->with('success', 'Panier mis à jour');
+        return redirect()->back()->with('success', 'Panier mis à jour ! ✨');
     }
 
     public function destroy(OrderCart $cartItem)
     {
+        if ($cartItem->users_id !== Auth::id()) {
+            return redirect()->back()->with('error', 'Action non autorisée.');
+        }
+
         $cartItem->delete();
-        return redirect()->back()->with('success', 'Article retiré du panier');
+        return redirect()->back()->with('success', 'Article retiré du panier.');
     }
 
     public function clear()
     {
         OrderCart::where('users_id', Auth::id())->delete();
-        return redirect()->back()->with('success', 'Panier vidé');
+        return redirect()->back()->with('success', 'Panier vidé ! 🧹');
     }
 }

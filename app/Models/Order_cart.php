@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Ligne;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class OrderCart extends Model
 {
@@ -17,21 +15,15 @@ class OrderCart extends Model
         'quantite',
     ];
 
-    protected $casts = [
-        'quantite' => 'integer',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
-
-    // Relation: Un panier appartient à un utilisateur
+    // Relation avec l'utilisateur
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'users_id');
     }
 
-    // Relation: Un panier peut avoir plusieurs lignes
-    public function ligne()
+    // Relation avec le produit
+    public function product()
     {
-        return $this->hasMany(Ligne::class);
+        return $this->belongsTo(Product::class, 'products_id');
     }
 }

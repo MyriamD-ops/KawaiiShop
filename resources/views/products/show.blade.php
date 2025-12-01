@@ -6,19 +6,19 @@
         <!-- Image du produit -->
         <div class="bg-white rounded-2xl shadow-lg p-8">
             <div class="w-full h-96 bg-pink-100 rounded-xl flex items-center justify-center">
-                <span class="text-8xl">🐰</span>
+                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover rounded-xl">
             </div>
         </div>
 
         <!-- Détails du produit -->
         <div class="bg-white rounded-2xl shadow-lg p-8">
-            <h1 class="text-4xl font-bold text-gray-800 mb-4">Peluche Lapin Rose</h1>
-            <p class="text-2xl font-bold text-pink-500 mb-6">24,99€</p>
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">{{ $product->name }}</h1>
+            <p class="text-2xl font-bold text-pink-500 mb-6">{{ $product->prix }}€</p>
             
             <!-- Description -->
             <div class="mb-6">
                 <h3 class="text-lg font-bold text-gray-800 mb-2">🎀 Description</h3>
-                <p class="text-gray-600">Une peluche lapin super douce et toute mignonne, parfaite pour les câlins et décorer ta chambre !</p>
+                <p class="text-gray-600">{{ $product->description }}</p>
             </div>
 
             <!-- Sélecteur de quantité -->
@@ -34,6 +34,7 @@
             <!-- Boutons d'action -->
             <div class="space-y-4">
                 <button class="w-full bg-pink-500 text-white py-4 rounded-xl font-bold text-lg hover:bg-pink-600 transition flex items-center justify-center">
+                    <a href="{{ route('cart.add', ['product' => $product->id]) }}">
                     <span class="mr-2">🛒</span> Ajouter au panier
                 </button>
                 <button class="w-full border-2 border-pink-500 text-pink-500 py-4 rounded-xl font-bold text-lg hover:bg-pink-50 transition">
