@@ -92,7 +92,7 @@ $categories = Category::withCount('products')->get();
                     <a href="{{ route('products.show', $product->id) }}" 
                        class="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-5 py-2 rounded-full hover:from-pink-600 hover:to-purple-600 transition transform hover:scale-105 shadow-md flex items-center">
                         <i class="fas fa-shopping-cart mr-2"></i>
-                        Ajouter
+                        Voir
                     </a>
                 </div>
                 

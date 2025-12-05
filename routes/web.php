@@ -9,34 +9,20 @@ use App\Http\Controllers\LigneController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
 
-
-
-
 // Page d'accueil
 Route::get('/', function () {
-return view('home');
-});
+    return view('home');
+})->name('home');
 
 // Page de connexion
 Route::get('/login2', function () {
     return view('auth.login2');
 })->name('login2');
 
-// Page d'inscription (si tu veux)
+// Page d'inscription
 Route::get('/register', function () {
     return view('auth.register');
 })->name('register');
-
-// Page produit (exemple avec un id)
-Route::get('/product/{}', function () {
-    // Pour l'instant, on passe l'id à la vue, mais plus tard tu iras chercher le produit en base
-    return view('products.show');
-})->name('product.show');
-
-// Page panier
-Route::get('/cart', function () {
-    return view('cart');
-})->name('cart');
 
 // Routes publiques (accessibles sans authentification)
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -45,44 +31,36 @@ Route::get('/products/{product}', [ProductController::class, 'show'])->name('pro
 Route::get('/categories.index', [CategoryController::class, 'index'])->name('categories.index');
 Route::get('/category/{category}', [CategoryController::class, 'show'])->name('category.show');
 
-
-
-
 // Routes authentifiées
 Route::middleware(['auth'])->group(function () {
-// Panier de l'utilisateur
-Route::get('/cart', [OrderCartController::class, 'index'])->name('cart.index');
-Route::post('/cart/clear', [OrderCartController::class, 'clear'])->name('cart.clear');
+    // Panier de l'utilisateur
+    Route::get('/cart', [OrderCartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/clear', [OrderCartController::class, 'clear'])->name('cart.clear');
 
-// Ajouter un produit au panier
-Route::get('/cart/add', [LigneController::class, 'addToCart'])->name('cart.add');
+    // Ajouter un produit au panier
+    Route::post('/products/{product}', [OrderCartController::class, 'store'])->name('cart.store');
 
-// Lignes du panier
-Route::delete('/lines/{line}', [LigneController::class, 'destroy'])->name('lines.destroy');
-Route::patch('/lines/{line}', [LigneController::class, 'update'])->name('lines.update');
+    // Modifier la quantité - CORRECTION ICI
+    Route::patch('/cart/{cartItem}', [OrderCartController::class, 'update'])->name('cart.update');
 
-// Commandes de l'utilisateur
-Route::get('/my-orders', [OrderController::class, 'index'])->name('my-orders.index');
-Route::get('/my-orders/{order}', [OrderController::class, 'show'])->name('my-orders.show');
+    // Supprimer produit
+    Route::delete('/cart/{cartItem}', [OrderCartController::class, 'destroy'])->name('cart.destroy');
+
+    // Commandes de l'utilisateur
+    Route::get('/my-orders', [OrderController::class, 'index'])->name('my-orders.index');
+    Route::get('/my-orders/{order}', [OrderController::class, 'show'])->name('my-orders.show');
 });
-
-
-
 
 // Routes administrateur
 Route::middleware(['auth', 'admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-
         // Dashboard admin
         Route::get('/dashboard', function () {
             return view('admin.dashboard');
         })->name('dashboard');
-
     });
-
-
 
 // Gestion des utilisateurs
 Route::resource('users', UserController::class);
@@ -90,38 +68,28 @@ Route::resource('users', UserController::class);
 // Gestion des catégories
 Route::resource('category', CategoryController::class);
 
-// Gestion des produits
-//Route::resource('products', ProductController::class);
-
 // Gestion des commandes
 Route::resource('orders', OrderController::class);
 Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
 
-
-
 // Gestion des paniers (admin)
-Route::get('/cart.index', [OrderCartController::class, 'adminIndex'])->name('cart.index');
+Route::get('/order-cart', [OrderCartController::class, 'adminIndex'])->name('order-cart.index');
 Route::get('order-carts/{orderCart}', [OrderCartController::class, 'show'])->name('order-carts.show');
 Route::delete('order-carts/{orderCart}', [OrderCartController::class, 'destroy'])->name('order-carts.destroy');
 
 // Gestion des lignes (admin)
 Route::resource('lignes', LigneController::class);
 
-// Dashboard admin
+// Dashboard
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-
-
-
+// Profile
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-
-
 
 require __DIR__.'/auth.php';

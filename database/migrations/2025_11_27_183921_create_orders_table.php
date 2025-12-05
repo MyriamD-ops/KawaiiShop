@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('users_id')->constrained('users')->onDelete('cascade');
             $table->float('montant',8,2);
-            $table->string('state');
+            $table->string('state')->default('en cours');
             $table->timestamps();
         });
     }

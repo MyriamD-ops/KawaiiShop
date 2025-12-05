@@ -13,6 +13,7 @@ class OrderCart extends Model
         'users_id',
         'products_id',
         'quantite',
+        'montant'
     ];
 
     // Relation avec l'utilisateur

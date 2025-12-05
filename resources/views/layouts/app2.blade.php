@@ -22,6 +22,14 @@
             <div class="flex items-center space-x-2">
                 <span class="text-3xl">🌸</span>
                 <h1 class="text-2xl font-bold text-pink-500">Kawaii Shop</h1>
+               <span class="text-gray-600">
+                @auth
+                Bienvenue, {{ Auth::user()->name }}
+                @else
+                Bienvenue invité 🌸
+                @endauth
+                </span>
+
             </div>
             
             <!-- Liens de navigation -->
@@ -36,7 +44,11 @@
                         <span class="text-2xl">🛒</span>
                         <!-- Bulle avec le nombre d'articles dans le panier -->
                         <span class="absolute -top-2 -right-2 bg-pink-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">
-                            0 <!-- Pour l'instant en dur, plus tard dynamique -->
+                             @auth
+                        {{ App\Models\OrderCart::where('users_id', Auth::id())->sum('quantite') }}
+                        @else
+                        0
+                        @endauth 
                         </span>
                     </a>
                     <a href="{{ url('/login') }}" class="text-2xl">👤</a>

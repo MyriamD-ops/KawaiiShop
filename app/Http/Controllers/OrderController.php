@@ -12,7 +12,7 @@ class OrderController extends Controller
     // Afficher la liste des commandes
     public function index()
     {
-        $orders = Order::with('user', 'lines')->latest('date')->paginate(15);
+        $orders = Order::with('user', 'lignes')->latest('date')->paginate(15);
         return view('orders.index', compact('orders'));
     }
 

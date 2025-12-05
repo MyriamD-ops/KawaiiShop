@@ -22,7 +22,7 @@
                     <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
                         <i class="fas fa-tags text-white text-lg"></i>
                     </div>
-                    <span class="text-xl font-bold text-gray-800">Boutique</span>
+                    <span class="text-xl font-bold text-gray-800">Produits par Catégorie</span>
                 </div>
                 <nav class="hidden md:block">
                     <ul class="flex space-x-8">
